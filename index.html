@@ -1,49 +1,148 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>4 Attractor Game</title>
+<meta charset="UTF-8">
+<title>4 Attractor Neon Arcade</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
 body {
-  font-family: Arial;
-  text-align: center;
-  background: linear-gradient(135deg, #ff8a00, #e52e71);
-  color: white;
   margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  background: linear-gradient(-45deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
+  background-size: 400% 400%;
+  animation: bg 8s ease infinite;
 }
 
+@keyframes bg {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* NEON FLOATS */
+body::before, body::after {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.6;
+}
+
+body::before {
+  background: #ff00ff;
+  top: 10%;
+  left: 10%;
+}
+
+body::after {
+  background: #00ffff;
+  bottom: 10%;
+  right: 10%;
+}
+
+/* MAIN CARD */
+.container {
+  width: 92%;
+  max-width: 450px;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 25px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,255,255,0.4);
+  backdrop-filter: blur(20px);
+  color: white;
+}
+
+/* TITLE */
 h1 {
-  margin-top: 20px;
+  font-size: 28px;
+  margin: 5px 0;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff;
 }
 
+.sub {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* INPUT */
 input {
-  padding: 10px;
+  width: 85%;
+  padding: 14px;
   font-size: 18px;
-  width: 200px;
-  border-radius: 8px;
+  border-radius: 14px;
   border: none;
+  outline: none;
+  text-align: center;
+  margin-top: 12px;
 }
 
+/* BUTTON */
 button {
-  padding: 10px 20px;
+  margin-top: 15px;
+  width: 65%;
+  padding: 14px;
   font-size: 18px;
-  margin-left: 10px;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 14px;
   cursor: pointer;
-  background: white;
-  color: black;
+
+  background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+  background-size: 200% 200%;
+  animation: glow 3s infinite;
+  box-shadow: 0 0 25px rgba(0,255,255,0.5);
   transition: 0.2s;
 }
 
 button:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
+@keyframes glow {
+  0% {background-position: 0%;}
+  50% {background-position: 100%;}
+  100% {background-position: 0%;}
+}
+
+/* RESULT BOX */
 #result {
-  margin-top: 20px;
-  font-size: 20px;
-  white-space: pre-line;
+  margin-top: 15px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 15px;
+  padding: 12px;
+  max-height: 260px;
+  overflow-y: auto;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* WIN */
+.win {
+  display: block;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+/* LEADERBOARD */
+#board {
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.9;
 }
 </style>
 
@@ -51,55 +150,103 @@ button:hover {
 
 <body>
 
-<h1>🎮 4 Attractor Game</h1>
+<div class="container">
 
-<p>Enter a number → watch it transform into words + attract to 4</p>
+<h1>🎮 4 ATTRACTOR</h1>
+<div class="sub">NEON ARCADE EDITION</div>
 
-<input id="num" type="number" placeholder="Enter a number">
-<button onclick="run()">Run</button>
+<input id="num" type="number" placeholder="Enter number">
+<br>
+<button onclick="run()">START</button>
 
-<p id="result"></p>
+<div id="board">🏆 Best Steps: 0</div>
+
+<div id="result"></div>
+
+</div>
 
 <script>
 
-function numToWords(n) {
-  const words = [
-    "", "one","two","three","four","five","six","seven","eight","nine","ten"
-  ];
-  return words[n] || n.toString();
+/* SOUND (no files needed) */
+function beep(freq) {
+  let ctx = new (window.AudioContext || window.webkitAudioContext)();
+  let osc = ctx.createOscillator();
+  let gain = ctx.createGain();
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.frequency.value = freq;
+  osc.type = "sine";
+
+  osc.start();
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+  osc.stop(ctx.currentTime + 0.2);
 }
 
+/* WORD SYSTEM (FIXED RULE) */
+function numToWords(n) {
+  const ones = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+  const teens = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const tens = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+
+  if (n < 10) return [ones[n]];
+  if (n < 20) return [teens[n - 10]];
+
+  if (n < 100) {
+    let t = Math.floor(n / 10);
+    let o = n % 10;
+    let arr = [tens[t]];
+    if (o !== 0) arr.push(ones[o]);
+    return arr;
+  }
+
+  return [n.toString()];
+}
+
+/* LEADERBOARD */
+let best = localStorage.getItem("bestSteps") || 0;
+document.getElementById("board").innerText = "🏆 Best Steps: " + best;
+
+/* GAME */
 function run() {
 
   let n = parseInt(document.getElementById("num").value);
 
-  if (isNaN(n)) {
-    document.getElementById("result").innerHTML =
-      "Please enter a number";
-    return;
-  }
+  if (isNaN(n)) return;
 
-  let text = "";
-  let steps = [];
+  let out = "";
+  let steps = 0;
 
-  for (let i = 0; i < 10; i++) {
+  beep(600);
 
-    let word = numToWords(n);
-    let len = word.replace(/ /g, "").length;
+  for (let i = 0; i < 20; i++) {
 
-    steps.push(`${n} → "${word}" → ${len}`);
+    let words = numToWords(n);
+    let len = words.reduce((a,w) => a + w.length, 0);
 
-    text += `${n}\n${word} has ${len} letters\n\n`;
+    out += `🔷 ${n} → ${words.join(" + ")} → ${len}<br>`;
 
     n = len;
+    steps++;
+
+    beep(300 + steps * 20);
 
     if (n === 4) {
-      text += "🔥 FOUR ATTRACTION REACHED!";
+      out += `<span class="win">🔥 FOUR ATTRACTOR REACHED IN ${steps} STEPS!</span>`;
       break;
     }
   }
 
-  document.getElementById("result").innerHTML = text;
+  document.getElementById("result").innerHTML = out;
+
+  if (steps > best) {
+    best = steps;
+    localStorage.setItem("bestSteps", best);
+    document.getElementById("board").innerText = "🏆 Best Steps: " + best;
+  }
+
+  beep(900);
 }
 
 </script>
