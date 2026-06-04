@@ -48,7 +48,7 @@ body{
   border:1px solid rgba(255,255,255,0.12);
 }
 
-/* 💎 BIG TITLE (ONLY THIS CHANGE) */
+/* 💎 BIG TITLE (ONLY FIXED PART) */
 .big-title{
   text-align:center;
   font-family:"Great Vibes", cursive;
@@ -66,13 +66,15 @@ body{
 
   letter-spacing:1px;
 
-  display:flex;
-  justify-content:center;
-
+  display:inline-block;
   width:100%;
+  padding-left:10px;
+  padding-right:10px;
+  box-sizing:border-box;
 
-  overflow:visible;
   white-space:nowrap;
+  overflow:hidden;
+  text-overflow:clip;
 }
 
 /* INPUT */
