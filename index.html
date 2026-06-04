@@ -48,12 +48,12 @@ body{
   border:1px solid rgba(255,255,255,0.12);
 }
 
-/* 💎 BIG TITLE (ONLY CHANGE HERE) */
+/* 💎 BIG TITLE (ONLY FIXED PART) */
 .big-title{
   text-align:center;
   font-family:"Great Vibes", cursive;
 
-  font-size:54px; /* FIXED SIZE */
+  font-size:54px;
 
   margin-top:10px;
   margin-bottom:10px;
@@ -68,7 +68,8 @@ body{
 
   display:block;
   width:100%;
-  white-space:nowrap;
+  white-space:normal;
+  word-break:keep-all;
 }
 
 /* INPUT */
@@ -311,4 +312,3 @@ async function run(){
 
 </body>
 </html>
-  
