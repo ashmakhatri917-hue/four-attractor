@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>4 Attractor</title>
+</head>
+<body>
+<h1>🎮 4 Attractor</h1>
+
+<input id="num" type="number" placeholder="Enter a number">
+<button onclick="run()">Run</button>
+
+<p id="result"></p>
+
+<script>
+function run() {
+  let n = parseInt(document.getElementById("num").value);
+
+  if (isNaN(n)) {
+    document.getElementById("result").innerHTML =
+      "Please enter a number";
+    return;
+  }
+
+  let steps = [];
+
+  for(let i=0;i<20;i++){
+    steps.push(n);
+
+    if(n===4){
+      break;
+    }
+
+    if(n%2===0){
+      n = Math.floor(n/2)+1;
+    } else {
+      n = n*3-1;
+    }
+  }
+
+  document.getElementById("result").innerHTML =
+    steps.join(" → ");
+}
+</script>
+
+</body>
+</html>
