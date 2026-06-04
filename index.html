@@ -2,15 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>4 Attractor Ultra</title>
+<title>4 Attractor Ultra Neon</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
 body{
   margin:0;
-  font-family: Arial;
-  background: radial-gradient(circle at top,#070a14,#02030a);
-  color:white;
+  font-family:Orbitron;
+  background: radial-gradient(circle at top,#060818,#02030a);
+  color:#eaf6ff;
   overflow:hidden;
+}
+
+/* BACKGROUND GLOW */
+.bg{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,255,255,0.08), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(255,0,255,0.08), transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(0,120,255,0.06), transparent 50%);
+  z-index:-2;
 }
 
 /* PARTICLES */
@@ -23,11 +37,11 @@ body{
 
 .p{
   position:absolute;
-  width:3px;
-  height:3px;
+  width:2px;
+  height:2px;
   background:cyan;
   border-radius:50%;
-  box-shadow:0 0 10px cyan,0 0 20px magenta;
+  box-shadow:0 0 8px cyan;
   animation:float 10s linear infinite;
 }
 
@@ -44,7 +58,7 @@ body{
   align-items:center;
   flex-direction:column;
   opacity:0;
-  transform:scale(1.05);
+  transform:scale(1.03);
   transition:.4s;
 }
 
@@ -54,67 +68,104 @@ body{
   transform:scale(1);
 }
 
-/* BOX */
-.box{
+/* PANEL */
+.panel{
   width:90%;
-  max-width:500px;
+  max-width:520px;
+  padding:18px;
+  border-radius:18px;
   background:rgba(255,255,255,0.05);
-  padding:15px;
-  border-radius:15px;
-  border:1px solid rgba(0,255,255,0.2);
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* TITLE */
+h1{
+  text-align:center;
+  font-size:20px;
+  text-shadow:0 0 12px rgba(0,255,255,0.4);
 }
 
 /* BUTTON */
 .btn{
   padding:12px;
-  margin:5px;
-  border-radius:12px;
+  margin:6px;
+  width:100%;
   border:none;
+  border-radius:12px;
   cursor:pointer;
-  background:linear-gradient(90deg,#00ffff,#ff00ff);
   font-weight:bold;
+  color:#eaf6ff;
+  background:linear-gradient(135deg,rgba(0,255,255,0.15),rgba(255,0,255,0.12));
+}
+
+/* INPUT */
+input{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin-top:8px;
+  background:rgba(255,255,255,0.05);
+  color:white;
 }
 
 /* STEP */
 .step{
   margin-top:6px;
   padding:6px;
-  border-left:3px solid cyan;
+  border-left:2px solid cyan;
   background:rgba(255,255,255,0.03);
 }
 
 /* SHAKE */
 .shake{
-  animation:shake .3s;
+  animation:shake .25s;
 }
 
 @keyframes shake{
   0%{transform:translate(0)}
-  25%{transform:translate(-5px,5px)}
-  50%{transform:translate(5px,-5px)}
-  75%{transform:translate(-3px,3px)}
+  25%{transform:translate(-6px,3px)}
+  50%{transform:translate(6px,-3px)}
   100%{transform:translate(0)}
 }
 
-/* FLASH */
-.flash{
+/* EXPLOSION */
+.particleBurst{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:cyan;
+  border-radius:50%;
+  box-shadow:0 0 12px cyan;
+  animation:burst .8s ease-out forwards;
+}
+
+@keyframes burst{
+  0%{transform:translate(0,0);opacity:1}
+  100%{transform:translate(var(--x),var(--y));opacity:0}
+}
+
+.flashGlow{
   position:fixed;
   width:100%;
   height:100%;
-  background:white;
+  background:radial-gradient(circle,rgba(0,255,255,0.4),transparent 60%);
   opacity:0;
-  pointer-events:none;
-}
-
-.flash.active{
-  animation:flash .4s;
+  animation:flash .5s;
 }
 
 @keyframes flash{
   0%{opacity:0}
-  50%{opacity:.3}
+  40%{opacity:1}
   100%{opacity:0}
+}
+
+.lb{
+  padding:6px;
+  margin:4px 0;
+  border-left:3px solid magenta;
+  background:rgba(255,255,255,0.03);
 }
 
 </style>
@@ -122,67 +173,99 @@ body{
 
 <body>
 
+<div class="bg"></div>
 <div id="particles"></div>
-<div id="flash" class="flash"></div>
 
-<!-- SOUNDS -->
-<audio id="click" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
-<audio id="win" src="https://actions.google.com/sounds/v1/cartoon/ta_da.ogg"></audio>
-<audio id="fail" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/16/audio_d0a8b7c9c0.mp3?filename=soft-calm-piano-ambient-112191.mp3">
+</audio>
+
+<!-- SOUND -->
+<audio id="clickSound" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+<audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/ta_da.ogg"></audio>
 
 <!-- MENU -->
 <div id="menu" class="screen active">
-  <h1>🎮 4 ATTRACTOR ULTRA</h1>
-  <button class="btn" onclick="go('game')">START</button>
-  <button class="btn" onclick="go('challenge')">CHALLENGE</button>
+  <div class="panel">
+    <h1>🎮 4 ATTRACTOR ULTRA</h1>
+    <button class="btn" onclick="go('game')">START</button>
+    <button class="btn" onclick="go('challenge')">CHALLENGE</button>
+    <button class="btn" onclick="go('leaderboard')">LEADERBOARD</button>
+  </div>
 </div>
 
 <!-- GAME -->
 <div id="game" class="screen">
-  <div class="box">
-    <h2>SIMULATION</h2>
-    <input id="num" type="number" placeholder="Enter number">
+  <div class="panel">
+    <h1>SIMULATION</h1>
+    <input id="num" type="number">
     <button class="btn" onclick="run(false)">RUN</button>
-    <button class="btn" onclick="go('menu')">BACK</button>
     <div id="out"></div>
   </div>
 </div>
 
 <!-- CHALLENGE -->
 <div id="challenge" class="screen">
-  <div class="box">
-    <h2>CHALLENGE</h2>
-    <input id="cnum" type="number" placeholder="Enter number">
+  <div class="panel">
+    <h1>CHALLENGE</h1>
+    <input id="cnum" type="number">
     <button class="btn" onclick="run(true)">START</button>
-    <button class="btn" onclick="go('menu')">BACK</button>
     <div id="cout"></div>
+  </div>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard" class="screen">
+  <div class="panel">
+    <h1>🏆 LEADERBOARD</h1>
+    <div id="board"></div>
+    <button class="btn" onclick="go('menu')">BACK</button>
   </div>
 </div>
 
 <script>
 
+/* NAV */
+function go(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
 /* SOUND */
 function s(id){
   let a=document.getElementById(id);
   a.currentTime=0;
-  a.play();
+  a.play().catch(()=>{});
 }
 
-/* NAV */
-function go(id){
-  s("click");
-  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+/* MUSIC */
+let musicStarted=false;
+
+function startMusic(){
+  const m=document.getElementById("bgMusic");
+  if(musicStarted) return;
+  m.volume=0.3;
+  m.play().catch(()=>{});
+  musicStarted=true;
+}
+
+/* MUSIC INTENSITY */
+function updateMusicIntensity(current){
+  const m=document.getElementById("bgMusic");
+  let dist=Math.abs(current-4);
+  let speed=1+(1-dist/10)*0.6;
+  m.playbackRate=Math.max(0.8,Math.min(1.6,speed));
 }
 
 /* PARTICLES */
 function particles(){
   let c=document.getElementById("particles");
-  for(let i=0;i<35;i++){
+  for(let i=0;i<40;i++){
     let p=document.createElement("div");
     p.className="p";
     p.style.left=Math.random()*100+"vw";
-    p.style.animationDuration=(5+Math.random()*5)+"s";
+    p.style.animationDuration=(5+Math.random()*6)+"s";
     c.appendChild(p);
   }
 }
@@ -207,24 +290,57 @@ function w(n){
 
 function len(a){return a.reduce((x,y)=>x+y.length,0);}
 
-/* EFFECTS */
-function flash(){
-  let f=document.getElementById("flash");
-  f.classList.add("active");
-  setTimeout(()=>f.classList.remove("active"),400);
+/* FX */
+function shake(){
+  document.body.classList.add("shake");
+  setTimeout(()=>document.body.classList.remove("shake"),250);
 }
 
-/* CORE */
+function explode(){
+  let f=document.createElement("div");
+  f.className="flashGlow";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),500);
+
+  for(let i=0;i<30;i++){
+    let p=document.createElement("div");
+    p.className="particleBurst";
+
+    let angle=Math.random()*2*Math.PI;
+    let dist=120+Math.random()*100;
+
+    p.style.setProperty("--x",Math.cos(angle)*dist+"px");
+    p.style.setProperty("--y",Math.sin(angle)*dist+"px");
+
+    p.style.left="50%";
+    p.style.top="50%";
+
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),800);
+  }
+
+  shake();
+}
+
+/* RUN */
+let board=[];
+let best=999;
+
 function run(ch){
+
+  startMusic();
 
   let n=ch?
     parseInt(document.getElementById("cnum").value):
     parseInt(document.getElementById("num").value);
 
   let out=ch?cout:document.getElementById("out");
-  let steps=0;
-
   out.innerHTML="";
+
+  s("clickSound");
+  shake();
+
+  let steps=0;
 
   for(let i=0;i<12;i++){
 
@@ -233,23 +349,23 @@ function run(ch){
 
     out.innerHTML+=`<div class="step">${n} → ${ww.join(" + ")} → ${l}</div>`;
 
+    updateMusicIntensity(n);
+
     n=l;
     steps++;
 
     if(n===4){
-      s("win");
-      flash();
-      document.body.classList.add("shake");
-      setTimeout(()=>document.body.classList.remove("shake"),300);
-
+      s("winSound");
+      explode();
       out.innerHTML+=`<div class="step">🔥 REACHED 4</div>`;
       break;
     }
   }
 
-  if(steps>10){
-    s("fail");
-  }
+  board.push({steps});
+  board.sort((a,b)=>a.steps-b.steps);
+  document.getElementById("board").innerHTML=
+    board.slice(0,10).map(x=>`<div class="lb">⭐ ${x.steps}</div>`).join("");
 }
 
 </script>
