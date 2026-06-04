@@ -2,205 +2,253 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>4 Attractor Debug + Sound</title>
+<title>4 Attractor Ultra</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
-
-body {
-  margin: 0;
-  font-family: 'Orbitron', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle at top, #0f0c29, #302b63, #24243e);
-  color: white;
+body{
+  margin:0;
+  font-family: Arial;
+  background: radial-gradient(circle at top,#070a14,#02030a);
+  color:white;
+  overflow:hidden;
 }
 
-.container {
-  width: 92%;
-  max-width: 520px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 20px;
-  padding: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 0 40px rgba(0,255,255,0.15);
+/* PARTICLES */
+#particles{
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:-1;
 }
 
-h1 {
-  text-align: center;
-  text-shadow: 0 0 10px cyan;
+.p{
+  position:absolute;
+  width:3px;
+  height:3px;
+  background:cyan;
+  border-radius:50%;
+  box-shadow:0 0 10px cyan,0 0 20px magenta;
+  animation:float 10s linear infinite;
 }
 
-.sub {
-  text-align: center;
-  font-size: 12px;
-  opacity: 0.7;
+@keyframes float{
+  from{transform:translateY(100vh);opacity:0}
+  to{transform:translateY(-10vh);opacity:1}
 }
 
-input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 12px;
-  border: none;
-  font-size: 16px;
-  text-align: center;
+/* SCREENS */
+.screen{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  opacity:0;
+  transform:scale(1.05);
+  transition:.4s;
 }
 
-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  background: linear-gradient(90deg, #00ffff, #ff00ff);
-  color: black;
-  box-shadow: 0 0 15px rgba(0,255,255,0.4);
+.active{
+  display:flex;
+  opacity:1;
+  transform:scale(1);
 }
 
-.step {
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.06);
-  border-left: 4px solid cyan;
+/* BOX */
+.box{
+  width:90%;
+  max-width:500px;
+  background:rgba(255,255,255,0.05);
+  padding:15px;
+  border-radius:15px;
+  border:1px solid rgba(0,255,255,0.2);
+  backdrop-filter:blur(10px);
 }
 
-.words {
-  color: #00ffcc;
+/* BUTTON */
+.btn{
+  padding:12px;
+  margin:5px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  background:linear-gradient(90deg,#00ffff,#ff00ff);
+  font-weight:bold;
 }
 
-.win {
-  margin-top: 10px;
-  display: block;
-  color: #00ff99;
-  font-weight: bold;
-  text-shadow: 0 0 10px #00ff99;
+/* STEP */
+.step{
+  margin-top:6px;
+  padding:6px;
+  border-left:3px solid cyan;
+  background:rgba(255,255,255,0.03);
 }
+
+/* SHAKE */
+.shake{
+  animation:shake .3s;
+}
+
+@keyframes shake{
+  0%{transform:translate(0)}
+  25%{transform:translate(-5px,5px)}
+  50%{transform:translate(5px,-5px)}
+  75%{transform:translate(-3px,3px)}
+  100%{transform:translate(0)}
+}
+
+/* FLASH */
+.flash{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+}
+
+.flash.active{
+  animation:flash .4s;
+}
+
+@keyframes flash{
+  0%{opacity:0}
+  50%{opacity:.3}
+  100%{opacity:0}
+}
+
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<div id="particles"></div>
+<div id="flash" class="flash"></div>
 
-<h1>🔬 4 ATTRACTOR SOUND DEBUG</h1>
-<div class="sub">Visual + Audio System Simulator</div>
+<!-- SOUNDS -->
+<audio id="click" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+<audio id="win" src="https://actions.google.com/sounds/v1/cartoon/ta_da.ogg"></audio>
+<audio id="fail" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
 
-<input id="num" type="number" placeholder="Enter number">
-<button onclick="run()">RUN SIMULATION</button>
+<!-- MENU -->
+<div id="menu" class="screen active">
+  <h1>🎮 4 ATTRACTOR ULTRA</h1>
+  <button class="btn" onclick="go('game')">START</button>
+  <button class="btn" onclick="go('challenge')">CHALLENGE</button>
+</div>
 
-<div id="result"></div>
+<!-- GAME -->
+<div id="game" class="screen">
+  <div class="box">
+    <h2>SIMULATION</h2>
+    <input id="num" type="number" placeholder="Enter number">
+    <button class="btn" onclick="run(false)">RUN</button>
+    <button class="btn" onclick="go('menu')">BACK</button>
+    <div id="out"></div>
+  </div>
+</div>
 
+<!-- CHALLENGE -->
+<div id="challenge" class="screen">
+  <div class="box">
+    <h2>CHALLENGE</h2>
+    <input id="cnum" type="number" placeholder="Enter number">
+    <button class="btn" onclick="run(true)">START</button>
+    <button class="btn" onclick="go('menu')">BACK</button>
+    <div id="cout"></div>
+  </div>
 </div>
 
 <script>
 
-/* 🔊 SOUND ENGINE */
-let audioCtx;
-
-function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+/* SOUND */
+function s(id){
+  let a=document.getElementById(id);
+  a.currentTime=0;
+  a.play();
 }
 
-function beep(freq, time=0.12, type="sine") {
-  initAudio();
-
-  let osc = audioCtx.createOscillator();
-  let gain = audioCtx.createGain();
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.frequency.value = freq;
-  osc.type = type;
-
-  osc.start();
-  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
-  osc.stop(audioCtx.currentTime + time);
+/* NAV */
+function go(id){
+  s("click");
+  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-/* SOUND TYPES */
-function soundStart() { beep(300); }
-function soundStep(i) { beep(200 + i * 30); }
-function soundWin() { beep(800, 0.2); setTimeout(()=>beep(1000,0.2),120); }
-function soundError() { beep(120,0.3,"square"); }
-
-/* WORD SYSTEM (FIXED RULE) */
-function numToWords(n) {
-  const ones = ["zero","one","two","three","four","five","six","seven","eight","nine"];
-  const teens = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
-  const tens = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
-
-  if (n < 10) return [ones[n]];
-  if (n < 20) return [teens[n - 10]];
-
-  if (n < 100) {
-    let t = Math.floor(n / 10);
-    let o = n % 10;
-    let arr = [tens[t]];
-    if (o !== 0) arr.push(ones[o]);
-    return arr;
+/* PARTICLES */
+function particles(){
+  let c=document.getElementById("particles");
+  for(let i=0;i<35;i++){
+    let p=document.createElement("div");
+    p.className="p";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(5+Math.random()*5)+"s";
+    c.appendChild(p);
   }
-
-  return String(n).split("").map(x => ones[Number(x)]);
 }
+particles();
 
-/* LENGTH */
-function getLength(words) {
-  let sum = 0;
-  for (let w of words) sum += w.length;
-  return sum;
-}
+/* WORD SYSTEM */
+function w(n){
+  const o=["zero","one","two","three","four","five","six","seven","eight","nine"];
+  const t=["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const s=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
 
-/* MAIN */
-function run() {
-
-  let n = parseInt(document.getElementById("num").value);
-  let result = document.getElementById("result");
-
-  if (isNaN(n)) {
-    soundError();
-    result.innerHTML = "⚠️ Enter a valid number";
-    return;
+  if(n<10)return[o[n]];
+  if(n<20)return[t[n-10]];
+  if(n<100){
+    let a=Math.floor(n/10),b=n%10;
+    let r=[s[a]];
+    if(b)r.push(o[b]);
+    return r;
   }
+  return String(n).split("").map(x=>o[+x]);
+}
 
-  result.innerHTML = "";
-  soundStart();
+function len(a){return a.reduce((x,y)=>x+y.length,0);}
 
-  for (let i = 0; i < 15; i++) {
+/* EFFECTS */
+function flash(){
+  let f=document.getElementById("flash");
+  f.classList.add("active");
+  setTimeout(()=>f.classList.remove("active"),400);
+}
 
-    let words = numToWords(n);
-    let len = getLength(words);
+/* CORE */
+function run(ch){
 
-    let div = document.createElement("div");
-    div.className = "step";
+  let n=ch?
+    parseInt(document.getElementById("cnum").value):
+    parseInt(document.getElementById("num").value);
 
-    div.innerHTML = `
-      🔷 <b>${n}</b><br>
-      ${words.join(" + ")}<br>
-      Letters: ${words.map(w=>w.length).join(" + ")} → <b>${len}</b>
-    `;
+  let out=ch?cout:document.getElementById("out");
+  let steps=0;
 
-    result.appendChild(div);
+  out.innerHTML="";
 
-    soundStep(i);
+  for(let i=0;i<12;i++){
 
-    n = len;
+    let ww=w(n);
+    let l=len(ww);
 
-    if (n === 4) {
-      soundWin();
-      let win = document.createElement("div");
-      win.className = "win";
-      win.innerText = "🔥 FOUR ATTRACTOR REACHED!";
-      result.appendChild(win);
+    out.innerHTML+=`<div class="step">${n} → ${ww.join(" + ")} → ${l}</div>`;
+
+    n=l;
+    steps++;
+
+    if(n===4){
+      s("win");
+      flash();
+      document.body.classList.add("shake");
+      setTimeout(()=>document.body.classList.remove("shake"),300);
+
+      out.innerHTML+=`<div class="step">🔥 REACHED 4</div>`;
       break;
     }
+  }
+
+  if(steps>10){
+    s("fail");
   }
 }
 
