@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>4 Attractor Neon Arcade</title>
+<title>4 Attractor Debug + Sound</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
@@ -10,139 +10,76 @@
 body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-
-  background: linear-gradient(-45deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
-  background-size: 400% 400%;
-  animation: bg 8s ease infinite;
-}
-
-@keyframes bg {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-/* NEON FLOATS */
-body::before, body::after {
-  content: "";
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.6;
-}
-
-body::before {
-  background: #ff00ff;
-  top: 10%;
-  left: 10%;
-}
-
-body::after {
-  background: #00ffff;
-  bottom: 10%;
-  right: 10%;
-}
-
-/* MAIN CARD */
-.container {
-  width: 92%;
-  max-width: 450px;
-  background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 25px;
-  padding: 22px;
-  text-align: center;
-  box-shadow: 0 0 40px rgba(0,255,255,0.4);
-  backdrop-filter: blur(20px);
+  background: radial-gradient(circle at top, #0f0c29, #302b63, #24243e);
   color: white;
 }
 
-/* TITLE */
+.container {
+  width: 92%;
+  max-width: 520px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(0,255,255,0.15);
+}
+
 h1 {
-  font-size: 28px;
-  margin: 5px 0;
-  text-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff;
+  text-align: center;
+  text-shadow: 0 0 10px cyan;
 }
 
 .sub {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-/* INPUT */
-input {
-  width: 85%;
-  padding: 14px;
-  font-size: 18px;
-  border-radius: 14px;
-  border: none;
-  outline: none;
   text-align: center;
-  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.7;
 }
 
-/* BUTTON */
-button {
-  margin-top: 15px;
-  width: 65%;
-  padding: 14px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-
-  background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
-  background-size: 200% 200%;
-  animation: glow 3s infinite;
-  box-shadow: 0 0 25px rgba(0,255,255,0.5);
-  transition: 0.2s;
-}
-
-button:hover {
-  transform: scale(1.08);
-}
-
-@keyframes glow {
-  0% {background-position: 0%;}
-  50% {background-position: 100%;}
-  100% {background-position: 0%;}
-}
-
-/* RESULT BOX */
-#result {
-  margin-top: 15px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 15px;
+input {
+  width: 100%;
   padding: 12px;
-  max-height: 260px;
-  overflow-y: auto;
-  text-align: left;
-  font-size: 13px;
-  line-height: 1.6;
+  margin-top: 15px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  text-align: center;
 }
 
-/* WIN */
-.win {
-  display: block;
+button {
+  width: 100%;
   margin-top: 10px;
-  font-size: 18px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  color: black;
+  box-shadow: 0 0 15px rgba(0,255,255,0.4);
+}
+
+.step {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border-left: 4px solid cyan;
+}
+
+.words {
   color: #00ffcc;
-  text-shadow: 0 0 10px #00ffff;
 }
 
-/* LEADERBOARD */
-#board {
+.win {
   margin-top: 10px;
-  font-size: 13px;
-  opacity: 0.9;
+  display: block;
+  color: #00ff99;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ff99;
 }
 </style>
 
@@ -152,14 +89,11 @@ button:hover {
 
 <div class="container">
 
-<h1>🎮 4 ATTRACTOR</h1>
-<div class="sub">NEON ARCADE EDITION</div>
+<h1>🔬 4 ATTRACTOR SOUND DEBUG</h1>
+<div class="sub">Visual + Audio System Simulator</div>
 
 <input id="num" type="number" placeholder="Enter number">
-<br>
-<button onclick="run()">START</button>
-
-<div id="board">🏆 Best Steps: 0</div>
+<button onclick="run()">RUN SIMULATION</button>
 
 <div id="result"></div>
 
@@ -167,22 +101,35 @@ button:hover {
 
 <script>
 
-/* SOUND (no files needed) */
-function beep(freq) {
-  let ctx = new (window.AudioContext || window.webkitAudioContext)();
-  let osc = ctx.createOscillator();
-  let gain = ctx.createGain();
+/* 🔊 SOUND ENGINE */
+let audioCtx;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function beep(freq, time=0.12, type="sine") {
+  initAudio();
+
+  let osc = audioCtx.createOscillator();
+  let gain = audioCtx.createGain();
 
   osc.connect(gain);
-  gain.connect(ctx.destination);
+  gain.connect(audioCtx.destination);
 
   osc.frequency.value = freq;
-  osc.type = "sine";
+  osc.type = type;
 
   osc.start();
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
-  osc.stop(ctx.currentTime + 0.2);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
+  osc.stop(audioCtx.currentTime + time);
 }
+
+/* SOUND TYPES */
+function soundStart() { beep(300); }
+function soundStep(i) { beep(200 + i * 30); }
+function soundWin() { beep(800, 0.2); setTimeout(()=>beep(1000,0.2),120); }
+function soundError() { beep(120,0.3,"square"); }
 
 /* WORD SYSTEM (FIXED RULE) */
 function numToWords(n) {
@@ -201,52 +148,60 @@ function numToWords(n) {
     return arr;
   }
 
-  return [n.toString()];
+  return String(n).split("").map(x => ones[Number(x)]);
 }
 
-/* LEADERBOARD */
-let best = localStorage.getItem("bestSteps") || 0;
-document.getElementById("board").innerText = "🏆 Best Steps: " + best;
+/* LENGTH */
+function getLength(words) {
+  let sum = 0;
+  for (let w of words) sum += w.length;
+  return sum;
+}
 
-/* GAME */
+/* MAIN */
 function run() {
 
   let n = parseInt(document.getElementById("num").value);
+  let result = document.getElementById("result");
 
-  if (isNaN(n)) return;
+  if (isNaN(n)) {
+    soundError();
+    result.innerHTML = "⚠️ Enter a valid number";
+    return;
+  }
 
-  let out = "";
-  let steps = 0;
+  result.innerHTML = "";
+  soundStart();
 
-  beep(600);
-
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 15; i++) {
 
     let words = numToWords(n);
-    let len = words.reduce((a,w) => a + w.length, 0);
+    let len = getLength(words);
 
-    out += `🔷 ${n} → ${words.join(" + ")} → ${len}<br>`;
+    let div = document.createElement("div");
+    div.className = "step";
+
+    div.innerHTML = `
+      🔷 <b>${n}</b><br>
+      ${words.join(" + ")}<br>
+      Letters: ${words.map(w=>w.length).join(" + ")} → <b>${len}</b>
+    `;
+
+    result.appendChild(div);
+
+    soundStep(i);
 
     n = len;
-    steps++;
-
-    beep(300 + steps * 20);
 
     if (n === 4) {
-      out += `<span class="win">🔥 FOUR ATTRACTOR REACHED IN ${steps} STEPS!</span>`;
+      soundWin();
+      let win = document.createElement("div");
+      win.className = "win";
+      win.innerText = "🔥 FOUR ATTRACTOR REACHED!";
+      result.appendChild(win);
       break;
     }
   }
-
-  document.getElementById("result").innerHTML = out;
-
-  if (steps > best) {
-    best = steps;
-    localStorage.setItem("bestSteps", best);
-    document.getElementById("board").innerText = "🏆 Best Steps: " + best;
-  }
-
-  beep(900);
 }
 
 </script>
