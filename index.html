@@ -48,7 +48,7 @@ body{
   border:1px solid rgba(255,255,255,0.12);
 }
 
-/* 💎 BIG TITLE (ONLY FIXED PART) */
+/* 💎 BIG TITLE (ONLY THIS CHANGE) */
 .big-title{
   text-align:center;
   font-family:"Great Vibes", cursive;
@@ -58,6 +58,17 @@ body{
   margin-top:10px;
   margin-bottom:10px;
 
+  position:relative;
+  display:block;
+
+  width:100%;
+
+  white-space:nowrap;
+  overflow:visible;
+
+  padding:0 20px;
+  box-sizing:border-box;
+
   background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88,#00ffff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -65,16 +76,6 @@ body{
   filter:drop-shadow(0 0 25px rgba(0,255,255,0.4));
 
   letter-spacing:1px;
-
-  display:inline-block;
-  width:100%;
-  padding-left:10px;
-  padding-right:10px;
-  box-sizing:border-box;
-
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:clip;
 }
 
 /* INPUT */
