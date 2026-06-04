@@ -2,20 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>4 Attractor - Aurora Premium</title>
+<title>4 Attractor - Final Premium</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
   overflow:hidden;
-  font-family:Orbitron;
   background:#03040a;
   color:white;
 }
 
-/* 🌌 AURORA NEON BACKGROUND (PREMIUM) */
+/* 🌌 AURORA BACKGROUND */
 .bg{
   position:fixed;
   width:100%;
@@ -23,8 +22,7 @@ body{
   background:
     radial-gradient(circle at 20% 30%, rgba(0,255,255,0.18), transparent 55%),
     radial-gradient(circle at 80% 40%, rgba(255,0,255,0.14), transparent 60%),
-    radial-gradient(circle at 50% 80%, rgba(0,255,140,0.10), transparent 65%),
-    radial-gradient(circle at 60% 20%, rgba(255,200,0,0.06), transparent 70%);
+    radial-gradient(circle at 50% 80%, rgba(0,255,140,0.10), transparent 65%);
 
   filter: blur(85px) saturate(1.6);
   animation: aurora 14s ease-in-out infinite alternate;
@@ -32,8 +30,8 @@ body{
 }
 
 @keyframes aurora{
-  from{transform:scale(1) rotate(0deg);}
-  to{transform:scale(1.1) rotate(2deg);}
+  from{transform:scale(1)}
+  to{transform:scale(1.1)}
 }
 
 /* 🧊 PANEL */
@@ -48,8 +46,6 @@ body{
   backdrop-filter:blur(25px);
 
   border:1px solid rgba(255,255,255,0.12);
-
-  box-shadow:0 0 35px rgba(0,255,255,0.08);
 }
 
 /* 💎 TITLE */
@@ -58,7 +54,7 @@ h1{
   font-size:58px;
   text-align:center;
 
-  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88,#00ffff);
+  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 
@@ -75,10 +71,11 @@ input{
 
   background:rgba(255,255,255,0.05);
   color:white;
-  outline:none;
+
+  font-family:Orbitron;
 }
 
-/* 🎮 BUTTON (CLEAN NEON) */
+/* BUTTON */
 .btn{
   width:100%;
   padding:14px;
@@ -92,13 +89,13 @@ input{
 
   border:1px solid rgba(0,255,255,0.2);
 
+  font-family:Orbitron;
+
   transition:0.15s;
 }
 
 .btn:hover{
-  box-shadow:
-    0 0 18px rgba(0,255,255,0.25),
-    0 0 28px rgba(255,0,255,0.12);
+  box-shadow:0 0 18px rgba(0,255,255,0.25);
   transform:scale(1.03);
 }
 
@@ -106,17 +103,24 @@ input{
   transform:scale(0.95);
 }
 
-/* 📦 STEPS */
+/* 📦 OUTPUT STEPS */
 .step{
-  margin-top:6px;
-  padding:8px;
+  margin-top:8px;
+  padding:10px;
+
   border-left:3px solid cyan;
   background:rgba(255,255,255,0.03);
-  border-radius:8px;
-  font-size:13px;
+  border-radius:10px;
+
+  font-size:14px;
+  line-height:1.4;
+
+  font-family:"Inter", sans-serif;
+
+  color:rgba(255,255,255,0.9);
 }
 
-/* 💥 SHAKE (AAA IMPACT) */
+/* 💥 SHAKE */
 .shake{
   animation: shake 0.075s cubic-bezier(.2,.8,.2,1);
 }
@@ -146,7 +150,6 @@ input{
   100%{transform:translate(var(--x),var(--y)) scale(0.2);opacity:0}
 }
 
-/* FLASH */
 .flash{
   position:fixed;
   width:100%;
@@ -190,7 +193,7 @@ input{
 let unlocked=false;
 let musicStarted=false;
 
-/* 🔊 AUDIO UNLOCK */
+/* 🔊 UNLOCK */
 function unlock(){
   const a=document.getElementById("tap");
   a.play().then(()=>{
@@ -216,13 +219,12 @@ function startMusic(){
   musicStarted=true;
 }
 
-/* 🎮 SHAKE */
+/* 🎮 FX */
 function shake(){
   document.body.classList.add("shake");
   setTimeout(()=>document.body.classList.remove("shake"),75);
 }
 
-/* 💥 EXPLOSION */
 function explosion(){
   let f=document.createElement("div");
   f.className="flash";
@@ -277,7 +279,7 @@ function len(a){
   return a.reduce((x,y)=>x+y.length,0);
 }
 
-/* 🎮 CORE GAME */
+/* 🎮 CORE */
 function run(){
 
   let n=parseInt(document.getElementById("num").value);
@@ -290,16 +292,19 @@ function run(){
     let ww=w(n);
     let l=len(ww);
 
-    out.innerHTML+=`<div class="step">${n} → ${ww.join(" + ")} → ${l}</div>`;
+    out.innerHTML+=`<div class="step">
+      🔢 ${n}<br>
+      📖 ${ww.join(" + ")}<br>
+      🔤 ${l}
+    </div>`;
 
     n=l;
 
     if(n===4){
-
       document.getElementById("boss").play().catch(()=>{});
       explosion();
 
-      out.innerHTML+=`<div class="step">🔥 BOSS MOMENT REACHED</div>`;
+      out.innerHTML+=`<div class="step">🔥 FOUR ATTRACTOR REACHED</div>`;
       break;
     }
   }
@@ -309,4 +314,3 @@ function run(){
 
 </body>
 </html>
-
