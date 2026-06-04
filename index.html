@@ -2,32 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>4 Attractor Ultra Neon</title>
+<title>4 Attractor Neon Exquisite</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
-
 body{
   margin:0;
-  font-family:Orbitron;
-  background: radial-gradient(circle at top,#060818,#02030a);
-  color:#eaf6ff;
   overflow:hidden;
+  font-family:Orbitron;
+  color:white;
 }
 
-/* BACKGROUND GLOW */
+/* 🌈 ULTRA NEON ANIMATED BACKGROUND */
 .bg{
   position:fixed;
   width:100%;
   height:100%;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(0,255,255,0.08), transparent 40%),
-    radial-gradient(circle at 80% 60%, rgba(255,0,255,0.08), transparent 40%),
-    radial-gradient(circle at 50% 100%, rgba(0,120,255,0.06), transparent 50%);
+  background: linear-gradient(120deg,#00f5ff,#ff00ff,#00ff88,#ffcc00,#00f5ff);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease infinite;
+  z-index:-3;
+  filter: blur(20px) saturate(2);
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* 🌌 DARK OVERLAY FOR CONTRAST */
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle at top, rgba(0,0,0,0.2), rgba(0,0,0,0.85));
   z-index:-2;
 }
 
-/* PARTICLES */
+/* ✨ FLOATING LIGHTS */
 #particles{
   position:fixed;
   width:100%;
@@ -37,12 +51,11 @@ body{
 
 .p{
   position:absolute;
-  width:2px;
-  height:2px;
-  background:cyan;
+  width:4px;
+  height:4px;
   border-radius:50%;
-  box-shadow:0 0 8px cyan;
-  animation:float 10s linear infinite;
+  animation: float 10s linear infinite;
+  box-shadow:0 0 12px currentColor;
 }
 
 @keyframes float{
@@ -50,63 +63,86 @@ body{
   to{transform:translateY(-10vh);opacity:1}
 }
 
-/* SCREENS */
+/* 🧊 CENTER SCREEN */
 .screen{
-  display:none;
   height:100vh;
+  display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  opacity:0;
-  transform:scale(1.03);
-  transition:.4s;
 }
 
-.active{
-  display:flex;
-  opacity:1;
-  transform:scale(1);
+/* 💎 TITLE (CALLIGRAPHY + NEON SHIFT) */
+.title{
+  font-family:"Great Vibes", cursive;
+  font-size:72px;
+  text-align:center;
+
+  background: linear-gradient(90deg,#00f5ff,#ff00ff,#00ff88,#ffcc00);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  animation: glowText 3s infinite alternate;
+  text-shadow:0 0 25px rgba(255,255,255,0.3);
 }
 
-/* PANEL */
+@keyframes glowText{
+  from{filter:drop-shadow(0 0 10px cyan)}
+  to{filter:drop-shadow(0 0 30px magenta)}
+}
+
+/* 🎮 SUB TITLE */
+.subtitle{
+  font-size:14px;
+  opacity:0.8;
+  letter-spacing:3px;
+  margin-top:-10px;
+}
+
+/* 💠 GLASS PANEL */
 .panel{
-  width:90%;
-  max-width:520px;
+  margin-top:20px;
   padding:18px;
   border-radius:18px;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 0 30px rgba(0,255,255,0.2);
+  width:90%;
+  max-width:450px;
 }
 
-/* TITLE */
-h1{
-  text-align:center;
-  font-size:20px;
-  text-shadow:0 0 12px rgba(0,255,255,0.4);
-}
-
-/* BUTTON */
+/* 🔘 BUTTONS (NEON TAP STYLE) */
 .btn{
-  padding:12px;
-  margin:6px;
   width:100%;
+  padding:14px;
+  margin:8px 0;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
   cursor:pointer;
   font-weight:bold;
-  color:#eaf6ff;
-  background:linear-gradient(135deg,rgba(0,255,255,0.15),rgba(255,0,255,0.12));
+  color:white;
+
+  background: linear-gradient(135deg,#00f5ff55,#ff00ff55,#00ff8855);
+
+  box-shadow:0 0 15px rgba(0,255,255,0.3);
+
+  transition:0.2s;
 }
 
-/* INPUT */
+.btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px cyan,0 0 30px magenta;
+}
+
+/* 📦 INPUT */
 input{
   width:100%;
-  padding:10px;
-  border-radius:10px;
+  padding:12px;
   border:none;
-  margin-top:8px;
-  background:rgba(255,255,255,0.05);
+  border-radius:12px;
+  margin-top:10px;
+  background:rgba(255,255,255,0.1);
   color:white;
 }
 
@@ -114,13 +150,14 @@ input{
 .step{
   margin-top:6px;
   padding:6px;
-  border-left:2px solid cyan;
-  background:rgba(255,255,255,0.03);
+  border-left:3px solid cyan;
+  background:rgba(255,255,255,0.05);
+  border-radius:6px;
 }
 
-/* SHAKE */
+/* 💥 SHAKE */
 .shake{
-  animation:shake .25s;
+  animation: shake 0.25s;
 }
 
 @keyframes shake{
@@ -130,142 +167,66 @@ input{
   100%{transform:translate(0)}
 }
 
-/* EXPLOSION */
-.particleBurst{
-  position:fixed;
-  width:6px;
-  height:6px;
-  background:cyan;
-  border-radius:50%;
-  box-shadow:0 0 12px cyan;
-  animation:burst .8s ease-out forwards;
-}
-
-@keyframes burst{
-  0%{transform:translate(0,0);opacity:1}
-  100%{transform:translate(var(--x),var(--y));opacity:0}
-}
-
-.flashGlow{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:radial-gradient(circle,rgba(0,255,255,0.4),transparent 60%);
-  opacity:0;
-  animation:flash .5s;
-}
-
-@keyframes flash{
-  0%{opacity:0}
-  40%{opacity:1}
-  100%{opacity:0}
-}
-
-.lb{
-  padding:6px;
-  margin:4px 0;
-  border-left:3px solid magenta;
-  background:rgba(255,255,255,0.03);
-}
-
 </style>
 </head>
 
 <body>
 
 <div class="bg"></div>
+<div class="overlay"></div>
 <div id="particles"></div>
 
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/10/16/audio_d0a8b7c9c0.mp3?filename=soft-calm-piano-ambient-112191.mp3">
-</audio>
-
 <!-- SOUND -->
-<audio id="clickSound" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
-<audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/ta_da.ogg"></audio>
+<audio id="tapSound" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
 
-<!-- MENU -->
-<div id="menu" class="screen active">
-  <div class="panel">
-    <h1>🎮 4 ATTRACTOR ULTRA</h1>
-    <button class="btn" onclick="go('game')">START</button>
-    <button class="btn" onclick="go('challenge')">CHALLENGE</button>
-    <button class="btn" onclick="go('leaderboard')">LEADERBOARD</button>
-  </div>
-</div>
+<!-- TITLE -->
+<div class="screen">
 
-<!-- GAME -->
-<div id="game" class="screen">
+  <div class="title">4 ATTRACTOR</div>
+  <div class="subtitle">NEON CALM SIMULATION SYSTEM</div>
+
   <div class="panel">
-    <h1>SIMULATION</h1>
-    <input id="num" type="number">
-    <button class="btn" onclick="run(false)">RUN</button>
+
+    <input id="num" type="number" placeholder="Enter number">
+
+    <button class="btn" onclick="tap(); run()">RUN SIMULATION</button>
+
     <div id="out"></div>
-  </div>
-</div>
 
-<!-- CHALLENGE -->
-<div id="challenge" class="screen">
-  <div class="panel">
-    <h1>CHALLENGE</h1>
-    <input id="cnum" type="number">
-    <button class="btn" onclick="run(true)">START</button>
-    <div id="cout"></div>
-  </div>
-</div>
-
-<!-- LEADERBOARD -->
-<div id="leaderboard" class="screen">
-  <div class="panel">
-    <h1>🏆 LEADERBOARD</h1>
-    <div id="board"></div>
-    <button class="btn" onclick="go('menu')">BACK</button>
   </div>
 </div>
 
 <script>
 
-/* NAV */
-function go(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-/* SOUND */
-function s(id){
-  let a=document.getElementById(id);
+/* 🎵 TAP SOUND */
+function tap(){
+  let a=document.getElementById("tapSound");
   a.currentTime=0;
   a.play().catch(()=>{});
+  shake();
 }
 
-/* MUSIC */
-let musicStarted=false;
-
-function startMusic(){
-  const m=document.getElementById("bgMusic");
-  if(musicStarted) return;
-  m.volume=0.3;
-  m.play().catch(()=>{});
-  musicStarted=true;
+/* 💥 SHAKE */
+function shake(){
+  document.body.classList.add("shake");
+  setTimeout(()=>document.body.classList.remove("shake"),250);
 }
 
-/* MUSIC INTENSITY */
-function updateMusicIntensity(current){
-  const m=document.getElementById("bgMusic");
-  let dist=Math.abs(current-4);
-  let speed=1+(1-dist/10)*0.6;
-  m.playbackRate=Math.max(0.8,Math.min(1.6,speed));
-}
+/* 🌈 PARTICLES */
+const colors=["cyan","magenta","yellow","lime","white"];
 
-/* PARTICLES */
 function particles(){
   let c=document.getElementById("particles");
-  for(let i=0;i<40;i++){
+  for(let i=0;i<60;i++){
     let p=document.createElement("div");
     p.className="p";
+
+    let col=colors[Math.floor(Math.random()*colors.length)];
+    p.style.color=col;
+
     p.style.left=Math.random()*100+"vw";
-    p.style.animationDuration=(5+Math.random()*6)+"s";
+    p.style.animationDuration=(4+Math.random()*8)+"s";
+
     c.appendChild(p);
   }
 }
@@ -290,57 +251,13 @@ function w(n){
 
 function len(a){return a.reduce((x,y)=>x+y.length,0);}
 
-/* FX */
-function shake(){
-  document.body.classList.add("shake");
-  setTimeout(()=>document.body.classList.remove("shake"),250);
-}
+/* 🎮 CORE */
+function run(){
 
-function explode(){
-  let f=document.createElement("div");
-  f.className="flashGlow";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),500);
+  let n=parseInt(document.getElementById("num").value);
+  let out=document.getElementById("out");
 
-  for(let i=0;i<30;i++){
-    let p=document.createElement("div");
-    p.className="particleBurst";
-
-    let angle=Math.random()*2*Math.PI;
-    let dist=120+Math.random()*100;
-
-    p.style.setProperty("--x",Math.cos(angle)*dist+"px");
-    p.style.setProperty("--y",Math.sin(angle)*dist+"px");
-
-    p.style.left="50%";
-    p.style.top="50%";
-
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),800);
-  }
-
-  shake();
-}
-
-/* RUN */
-let board=[];
-let best=999;
-
-function run(ch){
-
-  startMusic();
-
-  let n=ch?
-    parseInt(document.getElementById("cnum").value):
-    parseInt(document.getElementById("num").value);
-
-  let out=ch?cout:document.getElementById("out");
   out.innerHTML="";
-
-  s("clickSound");
-  shake();
-
-  let steps=0;
 
   for(let i=0;i<12;i++){
 
@@ -349,23 +266,13 @@ function run(ch){
 
     out.innerHTML+=`<div class="step">${n} → ${ww.join(" + ")} → ${l}</div>`;
 
-    updateMusicIntensity(n);
-
     n=l;
-    steps++;
 
     if(n===4){
-      s("winSound");
-      explode();
       out.innerHTML+=`<div class="step">🔥 REACHED 4</div>`;
       break;
     }
   }
-
-  board.push({steps});
-  board.sort((a,b)=>a.steps-b.steps);
-  document.getElementById("board").innerHTML=
-    board.slice(0,10).map(x=>`<div class="lb">⭐ ${x.steps}</div>`).join("");
 }
 
 </script>
