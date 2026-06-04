@@ -1,10 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>4 Attractor</title>
+<title>4 Attractor Game</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: linear-gradient(135deg, #ff8a00, #e52e71);
+  color: white;
+  margin: 0;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px;
+  font-size: 18px;
+  width: 200px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: white;
+  color: black;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 20px;
+  white-space: pre-line;
+}
+</style>
+
 </head>
+
 <body>
-<h1>🎮 4 Attractor</h1>
+
+<h1>🎮 4 Attractor Game</h1>
+
+<p>Enter a number → watch it transform into words + attract to 4</p>
 
 <input id="num" type="number" placeholder="Enter a number">
 <button onclick="run()">Run</button>
@@ -12,7 +61,16 @@
 <p id="result"></p>
 
 <script>
+
+function numToWords(n) {
+  const words = [
+    "", "one","two","three","four","five","six","seven","eight","nine","ten"
+  ];
+  return words[n] || n.toString();
+}
+
 function run() {
+
   let n = parseInt(document.getElementById("num").value);
 
   if (isNaN(n)) {
@@ -21,25 +79,29 @@ function run() {
     return;
   }
 
+  let text = "";
   let steps = [];
 
-  for(let i=0;i<20;i++){
-    steps.push(n);
+  for (let i = 0; i < 10; i++) {
 
-    if(n===4){
+    let word = numToWords(n);
+    let len = word.replace(/ /g, "").length;
+
+    steps.push(`${n} → "${word}" → ${len}`);
+
+    text += `${n}\n${word} has ${len} letters\n\n`;
+
+    n = len;
+
+    if (n === 4) {
+      text += "🔥 FOUR ATTRACTION REACHED!";
       break;
-    }
-
-    if(n%2===0){
-      n = Math.floor(n/2)+1;
-    } else {
-      n = n*3-1;
     }
   }
 
-  document.getElementById("result").innerHTML =
-    steps.join(" → ");
+  document.getElementById("result").innerHTML = text;
 }
+
 </script>
 
 </body>
