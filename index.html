@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>4 Attractor - Cinematic Final</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
@@ -48,18 +48,15 @@ body{
   border:1px solid rgba(255,255,255,0.12);
 }
 
-/* 💎 TITLE (ONLY CHANGE APPLIED) */
+/* 💎 TITLE (ONLY FIXED PART) */
 .big-title{
   text-align:center;
-  font-family:"Great Vibes", cursive;
+  font-family:"Parisienne", cursive;
 
   margin-top:10px;
   margin-bottom:10px;
 
   filter:drop-shadow(0 0 25px rgba(0,255,255,0.4));
-  letter-spacing:1px;
-
-  display:block;
 }
 
 /* 🔥 LINE 1 */
@@ -76,7 +73,8 @@ body{
 .title-line2{
   font-size:44px;
   line-height:1;
-  margin-top:-6px;
+
+  margin-top:0px;
 
   background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88,#00ffff);
   -webkit-background-clip:text;
@@ -114,7 +112,7 @@ input{
   font-family:Orbitron;
 }
 
-/* 📦 STEP */
+/* STEP */
 .step{
   margin-top:8px;
   padding:10px;
@@ -129,7 +127,7 @@ input{
   font-family:"Inter", sans-serif;
 }
 
-/* 💥 SHAKE */
+/* SHAKE */
 .shake{
   animation: shake 0.075s cubic-bezier(.2,.8,.2,1);
 }
@@ -140,7 +138,7 @@ input{
   100%{transform:translate(0);}
 }
 
-/* 💥 EXPLOSION */
+/* EXPLOSION */
 .burst{
   position:fixed;
   width:6px;
@@ -178,7 +176,7 @@ input{
 
 <div class="panel">
 
-  <!-- ONLY STRUCTURE CHANGE APPLIED -->
+  <!-- ONLY STRUCTURE CHANGE -->
   <div class="big-title">
     <div class="title-line1">4</div>
     <div class="title-line2">ATTRACTOR</div>
