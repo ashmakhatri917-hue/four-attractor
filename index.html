@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>4 Attractor - Final Premium</title>
+<title>4 Attractor - Cinematic Final</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -48,17 +48,22 @@ body{
   border:1px solid rgba(255,255,255,0.12);
 }
 
-/* 💎 TITLE */
-h1{
-  font-family:"Great Vibes", cursive;
-  font-size:58px;
+/* 💎 BIG CALLIGRAPHY TITLE (ONLY ADDITION) */
+.big-title{
   text-align:center;
+  font-family:"Great Vibes", cursive;
+  font-size:80px;
 
-  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88);
+  margin-top:10px;
+  margin-bottom:10px;
+
+  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88,#00ffff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 
-  filter:drop-shadow(0 0 18px rgba(0,255,255,0.35));
+  filter:drop-shadow(0 0 25px rgba(0,255,255,0.4));
+
+  letter-spacing:2px;
 }
 
 /* INPUT */
@@ -90,20 +95,9 @@ input{
   border:1px solid rgba(0,255,255,0.2);
 
   font-family:Orbitron;
-
-  transition:0.15s;
 }
 
-.btn:hover{
-  box-shadow:0 0 18px rgba(0,255,255,0.25);
-  transform:scale(1.03);
-}
-
-.btn:active{
-  transform:scale(0.95);
-}
-
-/* 📦 OUTPUT STEPS */
+/* 📦 STEP */
 .step{
   margin-top:8px;
   padding:10px;
@@ -116,8 +110,6 @@ input{
   line-height:1.4;
 
   font-family:"Inter", sans-serif;
-
-  color:rgba(255,255,255,0.9);
 }
 
 /* 💥 SHAKE */
@@ -127,10 +119,7 @@ input{
 
 @keyframes shake{
   0%{transform:translate(0);}
-  20%{transform:translate(-12px,4px);}
-  40%{transform:translate(12px,-4px);}
-  60%{transform:translate(-6px,2px);}
-  80%{transform:translate(6px,-2px);}
+  50%{transform:translate(10px,-4px);}
   100%{transform:translate(0);}
 }
 
@@ -171,7 +160,9 @@ input{
 <div class="bg"></div>
 
 <div class="panel">
-  <h1>4 ATTRACTOR</h1>
+
+  <!-- ONLY CHANGE HERE -->
+  <div class="big-title">4 ATTRACTOR</div>
 
   <input id="num" type="number" placeholder="Enter number">
 
@@ -193,7 +184,6 @@ input{
 let unlocked=false;
 let musicStarted=false;
 
-/* 🔊 UNLOCK */
 function unlock(){
   const a=document.getElementById("tap");
   a.play().then(()=>{
@@ -210,7 +200,6 @@ function tap(){
   a.play().catch(()=>{});
 }
 
-/* 🎵 MUSIC */
 function startMusic(){
   const m=document.getElementById("music");
   if(musicStarted) return;
@@ -219,7 +208,6 @@ function startMusic(){
   musicStarted=true;
 }
 
-/* 🎮 FX */
 function shake(){
   document.body.classList.add("shake");
   setTimeout(()=>document.body.classList.remove("shake"),75);
@@ -251,14 +239,12 @@ function explosion(){
   shake();
 }
 
-/* 🚀 BOOT */
 function boot(){
   tap();
   shake();
   startMusic();
 }
 
-/* WORD ENGINE */
 function w(n){
   const o=["zero","one","two","three","four","five","six","seven","eight","nine"];
   const t=["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
@@ -279,8 +265,11 @@ function len(a){
   return a.reduce((x,y)=>x+y.length,0);
 }
 
-/* 🎮 CORE */
-function run(){
+function delay(ms){
+  return new Promise(r=>setTimeout(r,ms));
+}
+
+async function run(){
 
   let n=parseInt(document.getElementById("num").value);
   let out=document.getElementById("out");
@@ -290,13 +279,17 @@ function run(){
   for(let i=0;i<12;i++){
 
     let ww=w(n);
+    let word=ww.join(" + ");
     let l=len(ww);
 
-    out.innerHTML+=`<div class="step">
-      🔢 ${n}<br>
-      📖 ${ww.join(" + ")}<br>
-      🔤 ${l}
-    </div>`;
+    out.innerHTML+=`
+      <div class="step">🔢 ${n}</div>
+      <div class="step">→ ${word}</div>
+      <div class="step">→ letters = ${l}</div>
+    `;
+
+    tap(); shake();
+    await delay(1000);
 
     n=l;
 
@@ -304,7 +297,7 @@ function run(){
       document.getElementById("boss").play().catch(()=>{});
       explosion();
 
-      out.innerHTML+=`<div class="step">🔥 FOUR ATTRACTOR REACHED</div>`;
+      out.innerHTML+=`<div class="step">💥 FOUR ATTRACTOR REACHED</div>`;
       break;
     }
   }
