@@ -268,9 +268,15 @@ input{
 
 let unlocked=false;
 let musicStarted=false;
-window.addEventListener("load",()=>{
-  let v=localStorage.getItem("last");
-  if(v) document.getElementById("num").value=v;
+  
+let history = 
+  JSON.parse(localStorage.getItem("history") || "[]");
+  
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const s = document.getElementById("splash");
+    if (s) s.remove();
+  }, 1200);
 });
 function unlock(){
   const a=document.getElementById("tap");
@@ -366,7 +372,9 @@ function showHistory(){
 }
 async function run(){
 
-  let n=parseInt(document.getElementById("num").value);
+  let n
+    =parseInt(document.getElementById("num").value);
+  localStorage.setItem("last", n);
   let out=document.getElementById("out");
 
   out.innerHTML="";
@@ -388,6 +396,8 @@ async function run(){
 
     n=l;
 
+history.push({ input: n, result: l });
+localStorage.setItem("history", JSON.stringify(history));
     if(n===4){
       document.getElementById("boss").play().catch(()=>{});
       explosion();
