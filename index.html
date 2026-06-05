@@ -429,7 +429,8 @@ async function run(){
 
 history.push({ input: old, result: l });
 
-if (history.length > 100) {
+// ✅ safety limit (prevents unlimited growth)
+while (history.length > 100) {
   history.shift();
 }
 
