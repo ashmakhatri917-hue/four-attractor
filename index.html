@@ -100,21 +100,23 @@ body{
 .btn{
   width:100%;
   padding:14px;
+  margin-top:10px;
+
   border-radius:14px;
   border:1px solid rgba(0,255,255,0.3);
+
   background:linear-gradient(90deg,#00ffff22,#ff00ff22);
   color:white;
   font-family:Orbitron;
+
   transition:0.2s;
+
+  position:relative;
+  overflow:hidden;
 }
 
 .btn:active{
   transform:scale(0.96);
-}
-
-.btn{
-  position:relative;
-  overflow:hidden;
 }
 
 .btn::before{
@@ -128,10 +130,22 @@ body{
   transform:rotate(25deg);
   animation:shine 3s infinite;
 }
-
 @keyframes shine{
   0%{transform:translateX(-100%) rotate(25deg);}
   100%{transform:translateX(100%) rotate(25deg);}
+}
+.splash-logo{
+  font-family:Orbitron;
+  font-size:34px;
+  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:zoom 1.2s ease forwards;
+}
+
+@keyframes zoom{
+  0%{transform:scale(0.4);opacity:0}
+  100%{transform:scale(1.2);opacity:0}
 }
   
 /* LINE 1 */
@@ -262,6 +276,8 @@ input{
   <input id="num" type="number" placeholder="Enter number">
 
   <button class="btn" onclick="boot(); run()">RUN SIMULATION</button>
+
+  <button class="btn" onclick="showHistory()">SHOW HISTORY</button>
 
   <div id="out"></div>
 </div>
@@ -412,7 +428,13 @@ async function run(){
   let old = n;
 
 history.push({ input: old, result: l });
+
+if (history.length > 100) {
+  history.shift();
+}
+
 localStorage.setItem("history", JSON.stringify(history));
+
 n = l;
     if(n===4){
       document.getElementById("boss").play().catch(()=>{});
