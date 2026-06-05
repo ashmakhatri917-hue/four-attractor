@@ -275,7 +275,11 @@ let history =
 window.addEventListener("load", () => {
   setTimeout(() => {
     const s = document.getElementById("splash");
-    if (s) s.remove();
+    if (s) {
+      s.style.opacity = "0";
+      setTimeout(() => s.remove(), 500);
+    }
+
   }, 1200);
 });
 function unlock(){
@@ -374,6 +378,7 @@ async function run(){
 
   let n
     =parseInt(document.getElementById("num").value);
+  if (isNaN(n)) return;
   localStorage.setItem("last", n);
   let out=document.getElementById("out");
 
