@@ -30,7 +30,17 @@ body{
   background:#03040a;
   color:white;
 }
+#splash{
+  position:fixed;
+  inset:0;
+  background:#03040a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
 
+  transition: opacity 0.6s ease;
+}
 /* 🌌 AURORA BACKGROUND */
 .bg{
   position:fixed;
@@ -399,9 +409,10 @@ async function run(){
     tap(); shake();
     await delay(1000);
 
-  history.push({ input: n, result: l });
-localStorage.setItem("history", JSON.stringify(history));
+  let old = n;
 
+history.push({ input: old, result: l });
+localStorage.setItem("history", JSON.stringify(history));
 n = l;
     if(n===4){
       document.getElementById("boss").play().catch(()=>{});
