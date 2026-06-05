@@ -50,7 +50,19 @@ body{
   from{transform:scale(1)}
   to{transform:scale(1.1)}
 }
+.step{
+  animation:fade 0.4s ease;
+}
 
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+  input:focus{
+  outline:none;
+  border:1px solid cyan;
+  box-shadow:0 0 15px rgba(0,255,255,0.3);
+  }
 /* 🧊 PANEL */
 .panel{
   width:90%;
@@ -75,7 +87,43 @@ body{
 
   filter:drop-shadow(0 0 25px rgba(0,255,255,0.4));
 }
+.btn{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(0,255,255,0.3);
+  background:linear-gradient(90deg,#00ffff22,#ff00ff22);
+  color:white;
+  font-family:Orbitron;
+  transition:0.2s;
+}
 
+.btn:active{
+  transform:scale(0.96);
+}
+
+.btn{
+  position:relative;
+  overflow:hidden;
+}
+
+.btn::before{
+  content:"";
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(120deg,transparent,rgba(0,255,255,0.2),transparent);
+  transform:rotate(25deg);
+  animation:shine 3s infinite;
+}
+
+@keyframes shine{
+  0%{transform:translateX(-100%) rotate(25deg);}
+  100%{transform:translateX(100%) rotate(25deg);}
+}
+  
 /* LINE 1 */
 .title-line1{
   font-size:56px;
@@ -220,7 +268,10 @@ input{
 
 let unlocked=false;
 let musicStarted=false;
-
+window.addEventListener("load",()=>{
+  let v=localStorage.getItem("last");
+  if(v) document.getElementById("num").value=v;
+});
 function unlock(){
   const a=document.getElementById("tap");
   a.play().then(()=>{
@@ -305,7 +356,14 @@ function len(a){
 function delay(ms){
   return new Promise(r=>setTimeout(r,ms));
 }
+function showHistory(){
+  let out=document.getElementById("out");
+  out.innerHTML="<div class='step'>📊 HISTORY</div>";
 
+  history.slice(-10).reverse().forEach(h=>{
+    out.innerHTML+=`<div class="step">🔢 ${h.input} → ${h.result}</div>`;
+  });
+}
 async function run(){
 
   let n=parseInt(document.getElementById("num").value);
