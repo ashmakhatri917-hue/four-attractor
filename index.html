@@ -394,10 +394,10 @@ async function run(){
     tap(); shake();
     await delay(1000);
 
-    n=l;
-
-history.push({ input: n, result: l });
+  history.push({ input: n, result: l });
 localStorage.setItem("history", JSON.stringify(history));
+
+n = l;
     if(n===4){
       document.getElementById("boss").play().catch(()=>{});
       explosion();
