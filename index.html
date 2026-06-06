@@ -3,391 +3,62 @@
 
 <head>
 <meta charset="UTF-8">
-
-<link rel="manifest" href="manifest.json">
-
-<link rel="icon" href="data:image/svg+xml,
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
-<defs>
-<linearGradient id='g' x1='0' x2='1'>
-<stop offset='0%' stop-color='%2300ffff'/>
-<stop offset='50%' stop-color='%23ff00ff'/>
-<stop offset='100%' stop-color='%2300ff88'/>
-</linearGradient>
-</defs>
-<rect width='512' height='512' rx='120' fill='%2303040a'/>
-<circle cx='256' cy='256' r='180' fill='none' stroke='url(%23g)' stroke-width='18'/>
-<text x='256' y='330' font-size='250' text-anchor='middle' fill='url(%23g)'>4</text>
-</svg>">
-
 <title>4 Attractor</title>
-<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
-  overflow:hidden;
   background:#03040a;
   color:white;
-}
-#splash{
-  position:fixed;
-  inset:0;
-  background:#03040a;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:99999;
-
-  transition: opacity 0.6s ease;
-}
-  .splash-logo{
-  font-family:Orbitron;
-  font-size:34px;
-  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:zoom 1.2s ease forwards;
+  overflow:hidden;
+  font-family:Inter;
 }
 
-@keyframes zoom{
-  0%{transform:scale(0.4);opacity:0}
-  100%{transform:scale(1.2);opacity:0}
-}
-/* 🌌 AURORA BACKGROUND */
-.bg{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(0,255,255,0.18), transparent 55%),
-    radial-gradient(circle at 80% 40%, rgba(255,0,255,0.14), transparent 60%),
-    radial-gradient(circle at 50% 80%, rgba(0,255,140,0.10), transparent 65%);
-
-  filter: blur(85px) saturate(1.6);
-  animation: aurora 14s ease-in-out infinite alternate;
-  z-index:-2;
-}
-
-@keyframes aurora{
-  from{transform:scale(1)}
-  to{transform:scale(1.1)}
-}
-.step{
-  animation:fade 0.4s ease;
-}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
-}
-  input:focus{
-  outline:none;
-  border:1px solid cyan;
-  box-shadow:0 0 15px rgba(0,255,255,0.3);
-  }
-/* 🧊 PANEL */
 .panel{
   width:90%;
   max-width:430px;
-  margin:60px auto;
-  padding:22px;
-  border-radius:18px;
-
+  margin:40px auto;
+  padding:20px;
   background:rgba(255,255,255,0.04);
-  backdrop-filter:blur(25px);
-
-  border:1px solid rgba(255,255,255,0.12);
+  border-radius:16px;
 }
 
-/* 💎 TITLE */
-.big-title{
-  text-align:center;
-  font-family:"Parisienne", cursive;
-
-  margin-top:10px;
-  margin-bottom:10px;
-
-  filter:drop-shadow(0 0 25px rgba(0,255,255,0.4));
-}
-.btn{
+input,button{
   width:100%;
-  padding:14px;
+  padding:12px;
   margin-top:10px;
-
-  border-radius:14px;
-  border:1px solid rgba(0,255,255,0.3);
-
-  background:linear-gradient(90deg,#00ffff22,#ff00ff22);
-  color:white;
-  font-family:Orbitron;
-
-  transition:0.2s;
-
-  position:relative;
-  overflow:hidden;
-}
-
-.btn:active{
-  transform:scale(0.96);
-}
-
-.btn::before{
-  content:"";
-  position:absolute;
-  top:-50%;
-  left:-50%;
-  width:200%;
-  height:200%;
-  background:linear-gradient(120deg,transparent,rgba(0,255,255,0.2),transparent);
-  transform:rotate(25deg);
-  animation:shine 3s infinite;
-}
-@keyframes shine{
-  0%{transform:translateX(-100%) rotate(25deg);}
-  100%{transform:translateX(100%) rotate(25deg);}
-}
-.splash-logo{
-  font-family:Orbitron;
-  font-size:34px;
-  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:zoom 1.2s ease forwards;
-}
-
-@keyframes zoom{
-  0%{transform:scale(0.4);opacity:0}
-  100%{transform:scale(1.2);opacity:0}
-}
-  
-/* LINE 1 */
-.title-line1{
-  font-size:56px;
-  line-height:1;
-
-  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88,#00ffff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-/* LINE 2 */
-.title-line2{
-  font-size:44px;
-  line-height:1;
-  margin-top:4px;
-
-  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff88,#00ffff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-
-  letter-spacing:1px;
-}
-
-/* INPUT */
-input{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  margin-top:12px;
-
-  background:rgba(255,255,255,0.05);
-  color:white;
-
-  font-family:Orbitron;
-}
-
-/* BUTTON */
-.btn{
-  width:100%;
-  padding:14px;
-  margin-top:10px;
-
-  border:none;
-  border-radius:14px;
-
-  background:rgba(255,255,255,0.04);
-  color:white;
-
-  border:1px solid rgba(0,255,255,0.2);
-
-  font-family:Orbitron;
-}
-
-/* STEP */
-.step{
-  margin-top:8px;
-  padding:10px;
-
-  border-left:3px solid cyan;
-  background:rgba(255,255,255,0.03);
   border-radius:10px;
-
-  font-size:14px;
-  line-height:1.4;
-
-  font-family:"Inter", sans-serif;
+  border:none;
+  font-family:Orbitron;
 }
+
+button{
+  background:#00ffff22;
+  color:white;
+}
+
 #graph{
   width:100%;
-  height:180px;
-  margin-top:12px;
-  border-radius:12px;
+  height:260px;
+  margin-top:10px;
   background:rgba(255,255,255,0.03);
-  border:1px solid rgba(0,255,255,0.15);
-}
-/* SHAKE */
-.shake{
-  animation: shake 0.075s cubic-bezier(.2,.8,.2,1);
-}
-
-@keyframes shake{
-  0%{transform:translate(0);}
-  50%{transform:translate(10px,-4px);}
-  100%{transform:translate(0);}
-}
-
-/* EXPLOSION */
-.burst{
-  position:fixed;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:cyan;
-  box-shadow:0 0 25px cyan,0 0 35px magenta;
-  animation: explode 0.9s forwards;
-}
-
-@keyframes explode{
-  0%{transform:translate(0,0) scale(1);opacity:1}
-  100%{transform:translate(var(--x),var(--y)) scale(0.2);opacity:0}
-}
-
-.flash{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:radial-gradient(circle,rgba(0,255,255,0.4),transparent);
-  animation:flash 0.4s ease-out;
-}
-
-@keyframes flash{
-  0%{opacity:0}
-  40%{opacity:1}
-  100%{opacity:0}
+  border-radius:12px;
+  border:1px solid rgba(0,255,255,0.2);
 }
 </style>
 </head>
 
 <body>
-<div id="splash">
-  <div class="splash-logo">4 ATTRACTOR</div>
-</div>
-<div class="bg"></div>
 
 <div class="panel">
-
-  <div class="big-title">
-    <div class="title-line1">4</div>
-    <div class="title-line2"> Attractor</div>
-  </div>
-
   <input id="num" type="number" placeholder="Enter number">
-
-  <button class="btn" onclick="boot(); run()">RUN SIMULATION</button>
-
-  <button class="btn" onclick="showHistory()">SHOW HISTORY</button>
-<canvas id="graph" width="400" height="260"></canvas>
-  <div id="out"></div>
+  <button onclick="run()">RUN</button>
+  <canvas id="graph" width="400" height="260"></canvas>
 </div>
-
-<!-- AUDIO -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/10/16/audio_d0a8b7c9c0.mp3">
-</audio>
-
-<audio id="tap" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
-<audio id="boss" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
 <script>
 
-let unlocked=false;
-let musicStarted=false;
-  
-let history = 
-  JSON.parse(localStorage.getItem("history") || "[]");
-  
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const s = document.getElementById("splash");
-    if (s) {
-      s.style.opacity = "0";
-      setTimeout(() => s.remove(), 500);
-    }
-
-  }, 1200);
-});
-function unlock(){
-  const a=document.getElementById("tap");
-  a.play().then(()=>{
-    a.pause();
-    a.currentTime=0;
-    unlocked=true;
-  }).catch(()=>{});
-}
-
-function tap(){
-  const a=document.getElementById("tap");
-  if(!unlocked){unlock();return;}
-  a.currentTime=0;
-  a.play().catch(()=>{});
-}
-
-function startMusic(){
-  const m=document.getElementById("music");
-  if(musicStarted) return;
-  m.volume=0.3;
-  m.play().catch(()=>{});
-  musicStarted=true;
-}
-
-function shake(){
-  document.body.classList.add("shake");
-  setTimeout(()=>document.body.classList.remove("shake"),75);
-}
-
-function explosion(){
-  let f=document.createElement("div");
-  f.className="flash";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),400);
-
-  for(let i=0;i<60;i++){
-    let p=document.createElement("div");
-    p.className="burst";
-
-    let a=Math.random()*Math.PI*2;
-    let d=170+Math.random()*140;
-
-    p.style.setProperty("--x",Math.cos(a)*d+"px");
-    p.style.setProperty("--y",Math.sin(a)*d+"px");
-
-    p.style.left="50%";
-    p.style.top="50%";
-
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),900);
-  }
-
-  shake();
-}
-
-function boot(){
-  tap();
-  shake();
-  startMusic();
-}
+let dotPositions = [];
 
 function w(n){
   const o=["zero","one","two","three","four","five","six","seven","eight","nine"];
@@ -412,15 +83,10 @@ function len(a){
 function delay(ms){
   return new Promise(r=>setTimeout(r,ms));
 }
-function showHistory(){
-  let out=document.getElementById("out");
-  out.innerHTML="<div class='step'>📊 HISTORY</div>";
 
-  history.slice(-10).reverse().forEach(h=>{
-    out.innerHTML+=`<div class="step">🔢 ${h.input} → ${h.result}</div>`;
-  });
-}
-  function drawGraph(points){
+/* ---------------- GRAPH ---------------- */
+
+function drawGraph(points){
 
   const canvas = document.getElementById("graph");
   const ctx = canvas.getContext("2d");
@@ -429,111 +95,146 @@ function showHistory(){
 
   if(points.length < 1) return;
 
+  dotPositions = [];
+
   const W = canvas.width;
   const H = canvas.height;
 
-  const left = 55;
+  const left = 50;
   const right = 20;
   const top = 15;
   const bottom = 35;
 
   const max = Math.max(...points);
 
-  // background
-  ctx.fillStyle = "rgba(255,255,255,0.02)";
-  ctx.fillRect(0,0,W,H);
-
   // axes
-  ctx.strokeStyle = "rgba(255,255,255,0.5)";
-  ctx.lineWidth = 1;
-
+  ctx.strokeStyle="rgba(255,255,255,0.4)";
   ctx.beginPath();
   ctx.moveTo(left,top);
   ctx.lineTo(left,H-bottom);
   ctx.lineTo(W-right,H-bottom);
   ctx.stroke();
 
-  // axis labels
-  ctx.fillStyle = "white";
-  ctx.font = "11px Orbitron";
+  // line
+  ctx.strokeStyle="cyan";
+  ctx.lineWidth=2;
+  ctx.beginPath();
 
-  ctx.fillText("Number",5,12);
-  ctx.fillText("Step",W-45,H-10);
+  points.forEach((v,i)=>{
 
-  // origin label
-  ctx.fillText("0",left-18,H-bottom+4);
+    const x = left + i*((W-left-right)/(points.length-1));
+    const y = H-bottom - (v/max)*(H-top-bottom);
 
-  // Y scale labels
-  const marks = 4;
+    if(i===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
 
-  for(let i=0;i<=marks;i++){
+    dotPositions.push({x,y,step:i,value:v});
+  });
 
-    const value =
-      Math.round(max - (max*i/marks));
+  ctx.stroke();
 
-    const y =
-      top + ((H-to
-async function run(){
+  // dots
+  points.forEach((v,i)=>{
 
-  let n
-    =parseInt(document.getElementById("num").value);
-  if (isNaN(n)) return;
-  localStorage.setItem("last", n);
-  let out=document.getElementById("out");
+    const d = dotPositions[i];
 
-  out.innerHTML="";
+    ctx.fillStyle="cyan";
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,5,0,Math.PI*2);
+    ctx.fill();
 
-let graphData = [];
+    ctx.fillStyle="white";
+    ctx.font="10px Inter";
+    ctx.fillText(v,d.x-8,d.y-8);
 
-for(let i=0;i<12;i++){
+    ctx.fillText(i,d.x-3,H-bottom+16);
+  });
 
-    let ww=w(n);
-    let word=ww.join(" + ");
-    let l=len(ww);
+  // attractor highlight
+  if(points[points.length-1]===4){
 
-    out.innerHTML+=`
-      <div class="step">🔢 ${n}</div>
-      <div class="step">→ ${word}</div>
-      <div class="step">→ letters = ${l}</div>
-    `;
+    const d = dotPositions[points.length-1];
 
-    tap();
-    shake();
-    await delay(1000);
+    ctx.fillStyle="#ff00ff";
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,8,0,Math.PI*2);
+    ctx.fill();
 
-    graphData.push(n);
-
-    let old = n;
-
-    history.push({ input: old, result: l });
-
-while (history.length > 100) {
-  history.shift();
+    ctx.strokeStyle="#00ffff";
+    ctx.stroke();
+  }
 }
 
-localStorage.setItem(
-  "history",
-  JSON.stringify(history)
-);
+/* ---------------- CLICK SYSTEM ---------------- */
 
-    n = l;
+const canvas = document.getElementById("graph");
 
-    if(n===4){
+canvas.addEventListener("click",(e)=>{
 
-      graphData.push(4);
-      drawGraph(graphData);
+  const rect = canvas.getBoundingClientRect();
 
-      document.getElementById("boss").play().catch(()=>{});
-      explosion();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
-      out.innerHTML+=`
-        <div class="step">💥 FOUR ATTRACTOR REACHED</div>
-      `;
+  for(let d of dotPositions){
+
+    const dist =
+      Math.sqrt((x-d.x)**2 + (y-d.y)**2);
+
+    if(dist < 10){
+
+      if(d.step === dotPositions.length - 1){
+
+        alert(
+`📍 Step: ${d.step}
+🔢 Number: ${d.value}
+🎯 Attractor reached!`
+        );
+
+      } else {
+
+        alert(
+`📍 Step: ${d.step}
+🔢 Number: ${d.value}`
+        );
+      }
 
       break;
     }
   }
-}  
+
+});
+
+/* ---------------- MAIN ---------------- */
+
+async function run(){
+
+  let n = parseInt(document.getElementById("num").value);
+  if(isNaN(n)) return;
+
+  let graphData = [];
+
+  for(let i=0;i<12;i++){
+
+    let ww = w(n);
+    let l = len(ww);
+
+    graphData.push(n);
+
+    await delay(500);
+
+    n = l;
+
+    if(n===4){
+      graphData.push(4);
+      drawGraph(graphData);
+      break;
+    }
+  }
+
+  drawGraph(graphData);
+}
+
 </script>
 
 </body>
