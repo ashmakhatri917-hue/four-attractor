@@ -443,19 +443,22 @@ function showHistory(){
 
   for(let i=0;i<=marks;i++){
 
-    const value =
-      Math.round(max - (max*i/marks));
+  const value =
+    Math.round(max - (max*i/marks));
 
-    const y =
-      top + ((H-top-bottom)*i/marks);
+  const y =
+    top + ((H-top-bottom)*i/marks);
 
-    ctx.strokeStyle="rgba(255,255,255,0.15)";
+  ctx.strokeStyle="rgba(255,255,255,0.15)";
 
+  ctx.beginPath();
+  ctx.moveTo(left,y);
+  ctx.lineTo(W-right,y);
+  ctx.stroke();
 
-  const canvas = document.getElementById("graph");
-  const ctx = canvas.getContext("2d");
-
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  ctx.fillText(value,left-40,y+4);
+  }
 
   if(points.length < 1) return;
 
@@ -569,9 +572,9 @@ function showHistory(){
 
     const i=points.length-1;
 
-    const x=
-      left +
-      i*((W-left-right)/(points.length-1));
+    const x =
+  left +
+  i * ((W-left-right)/safeLen);
 
     const y=
       H-bottom -
