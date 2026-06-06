@@ -298,7 +298,7 @@ input{
   <button class="btn" onclick="boot(); run()">RUN SIMULATION</button>
 
   <button class="btn" onclick="showHistory()">SHOW HISTORY</button>
-<canvas id="graph" width="400" height="180"></canvas>
+<canvas id="graph" width="400" height="260"></canvas>
   <div id="out"></div>
 </div>
 
@@ -422,27 +422,84 @@ function showHistory(){
 }
   function drawGraph(points){
 
-  const canvas=document.getElementById("graph");
-  const ctx=canvas.getContext("2d");
+  const canvas = document.getElementById("graph");
+  const ctx = canvas.getContext("2d");
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  if(points.length<2) return;
+  if(points.length < 1) return;
 
-  const max=Math.max(...points);
+  const W = canvas.width;
+  const H = canvas.height;
 
+  const left = 55;
+  const right = 20;
+  const top = 15;
+  const bottom = 35;
+
+  const max = Math.max(...points);
+
+  // background
+  ctx.fillStyle = "rgba(255,255,255,0.02)";
+  ctx.fillRect(0,0,W,H);
+
+  // axes
+  ctx.strokeStyle = "rgba(255,255,255,0.5)";
+  ctx.lineWidth = 1;
+
+  ctx.beginPath();
+  ctx.moveTo(left,top);
+  ctx.lineTo(left,H-bottom);
+  ctx.lineTo(W-right,H-bottom);
+  ctx.stroke();
+
+  // axis labels
+  ctx.fillStyle = "white";
+  ctx.font = "11px Orbitron";
+
+  ctx.fillText("Number",5,12);
+  ctx.fillText("Step",W-45,H-10);
+
+  // origin label
+  ctx.fillText("0",left-18,H-bottom+4);
+
+  // Y scale labels
+  const marks = 4;
+
+  for(let i=0;i<=marks;i++){
+
+    const value =
+      Math.round(max - (max*i/marks));
+
+    const y =
+      top + ((H-top-bottom)*i/marks);
+
+    ctx.strokeStyle="rgba(255,255,255,0.15)";
+    ctx.beginPath();
+    ctx.moveTo(left,y);
+    ctx.lineTo(W-right,y);
+    ctx.stroke();
+
+    ctx.fillStyle="white";
+    ctx.fillText(value,left-40,y+4);
+  }
+
+  if(points.length===1) return;
+
+  // graph line
   ctx.strokeStyle="cyan";
   ctx.lineWidth=3;
-
   ctx.beginPath();
 
   points.forEach((v,i)=>{
 
-    const x=20+i*((canvas.width-40)/(points.length-1));
+    const x=
+      left +
+      i*((W-left-right)/(points.length-1));
 
     const y=
-      canvas.height-20-
-      (v/max)*(canvas.height-40);
+      H-bottom -
+      (v/max)*(H-top-bottom);
 
     if(i===0) ctx.moveTo(x,y);
     else ctx.lineTo(x,y);
@@ -450,6 +507,53 @@ function showHistory(){
   });
 
   ctx.stroke();
+
+  // dots + labels
+  points.forEach((v,i)=>{
+
+    const x=
+      left +
+      i*((W-left-right)/(points.length-1));
+
+    const y=
+      H-bottom -
+      (v/max)*(H-top-bottom);
+
+    // dot
+    ctx.fillStyle="cyan";
+    ctx.beginPath();
+    ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fill();
+
+    // number label
+    ctx.fillStyle="white";
+    ctx.font="10px Inter";
+    ctx.fillText(v,x-8,y-8);
+
+    // step label
+    ctx.fillText(i,x-3,H-bottom+16);
+  });
+
+  // final 4 attractor point
+  if(points[points.length-1]===4){
+
+    const i=points.length-1;
+
+    const x=
+      left +
+      i*((W-left-right)/(points.length-1));
+
+    const y=
+      H-bottom -
+      (4/max)*(H-top-bottom);
+
+    ctx.strokeStyle="#ff00ff";
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+    ctx.arc(x,y,8,0,Math.PI*2);
+    ctx.stroke();
+  }
   }
 async function run(){
 
